@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     Route::post('logout', 'logout');
 //     Route::post('refresh', 'refresh');
 // });
+
+
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::group(['middleware' =>  'adminPermission', 'prefix' => 'admin'], function () {
+
+    Route::resource('category', CategoryController::class)->only([
+        'index', 'store', 'show', 'update', 'destroy',
+    ]);
+
+});
