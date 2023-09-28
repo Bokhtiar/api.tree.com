@@ -13,6 +13,14 @@ class Category extends Model
     protected $primaryKey = 'category_id';
 
     protected $fillable = [
-        'category_name'
+        'category_name',
+        'slug',
+        'parent_id',
+        'thumbnail',
     ];
+
+    public function childs()
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'category_id');
+    }
 } 

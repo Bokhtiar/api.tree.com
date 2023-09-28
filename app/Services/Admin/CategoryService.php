@@ -16,7 +16,10 @@ class CategoryService
     public static function storeDocument($request)
     {
         return array(
-            'category_name' => $request->category_name
+            'slug' => $request->category_name,
+            'thumbnail' => $request->thumbnail,
+            'parent_id' => $request->parent_id,
+            'category_name' => $request->category_name,
         );
     }
 
@@ -30,6 +33,12 @@ class CategoryService
     public static function findById($id)
     {
         return Category::find($id);
+    }
+
+    /* specific resource with field */
+    public static function findByField($field, $value)
+    {
+        return Category::where($field, $value)->first();
     }
 
     /* specific reosurce update */
