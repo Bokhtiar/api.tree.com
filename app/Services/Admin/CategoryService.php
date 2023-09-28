@@ -48,6 +48,13 @@ class CategoryService
         return $category->update(CategoryService::storeDocument($request));
     }
 
+    /* find by id by Delete */
+    public static function findByIdDeleteChecker($id)
+    {
+        $category = CategoryService::findById($id);
+        return Category::where('parent_id', $id)->first();   
+    }
+
     /* published or unpublished */
     public static function status($id)
     {

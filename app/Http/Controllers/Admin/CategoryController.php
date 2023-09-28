@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Validator;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
 use App\Services\Admin\CategoryService;
-use App\Traits\HttpResponseTrait;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -43,41 +43,47 @@ class CategoryController extends Controller
         if ($existCategory) {
             return $this->HttpErrorResponse('Category Name Already Exist', 422);
         }
-        
+
         $data = CategoryService::store($request);
 
         return $this->HttpSuccessResponse("Category Store Created", $data, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    /* Display the specified resource. */
     public function show(string $id)
     {
-        //
+        try {
+            $data = CategoryService::findById($id);
+            return $this->HttpSuccessResponse('Category Details', $data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    /* Update the specified resource in storage. */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $data = CategoryService::update($id, $request);
+            return $this->HttpSuccessResponse("Category Updated", $data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    /* Remove the specified resource from storage. */
     public function destroy(string $id)
     {
-        //
+        try { 
+            $data = CategoryService::findByIdDeleteChecker($id);
+            if ($data) {
+                return $this->HttpErrorResponse('Already Exist subCategory', 422);
+            }else{
+                CategoryService::findById($id)->delete();
+            }
+            return $this->HttpSuccessResponse('Category Deleted', $data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
