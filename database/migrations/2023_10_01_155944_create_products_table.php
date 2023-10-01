@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('image');
             $table->float('ratting');
             $table->float('inc');
+            $table->integer('price');
             $table->integer('parent_id')->nullable();
             $table->integer('category_id');
             $table->longText('body')->nullable();

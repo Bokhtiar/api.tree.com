@@ -17,6 +17,7 @@ class Product extends Model
         'title',
         'image',
         'inc',
+        'price',
         'ratting',
         'parent_id',
         'category_id',
