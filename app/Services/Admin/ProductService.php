@@ -26,15 +26,15 @@ class ProductService
         }
 
         return array(
+            'image' => $image,
+            'inc' => $request->inc,
             'slug' => $request->title,
             'title' => $request->title,
-            'image' => $image,
-            'inc_id' => $request->inc_id,
             'ratting' => $request->ratting,
-            'parent_id' => $request->parent_id,
-            'category_id' => $request->category_id,
             'product_body' => $request->body,
+            'parent_id' => $request->parent_id,
             'plant_body' => $request->plant_body,
+            'category_id' => $request->category_id,
         );
     }
 

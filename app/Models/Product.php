@@ -16,12 +16,12 @@ class Product extends Model
         'slug',
         'title',
         'image',
-        'inc_id',
+        'inc',
         'ratting',
         'parent_id',
         'category_id',
         'body',
-        'tree_plant_body',
+        'plant_body',
     ];
 
     public function childs()

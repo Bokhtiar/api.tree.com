@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('image');
             $table->float('ratting');
-            $table->integer('inc_id');
-            $table->integer('parent_id');
+            $table->float('inc');
+            $table->integer('parent_id')->nullable();
             $table->integer('category_id');
             $table->longText('body')->nullable();
             $table->longText('plant_body')->nullable();

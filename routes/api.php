@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,10 @@ Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::group(['middleware' =>  'adminPermission', 'prefix' => 'admin'], function () {
 
     Route::resource('category', CategoryController::class)->only([
+        'index', 'store', 'show', 'update', 'destroy',
+    ]);
+    
+    Route::resource('product', ProductController::class)->only([
         'index', 'store', 'show', 'update', 'destroy',
     ]);
 
