@@ -45,7 +45,7 @@ class ProductController extends Controller
             /* check exist name */
             $existTitle = Product::where('title', $request->title)->where('inc', $request->inc)->first();
             if ($existTitle) {
-                return $this->HttpErrorResponse("Product title already exist", 409);
+                return $this->HttpErrorResponse("Product title & inc already exist", 409);
             }
 
             $data = ProductService::store($request);
@@ -82,15 +82,15 @@ class ProductController extends Controller
             if ($validator->fails()) {
                 return $this->HttpErrorResponse($validator->errors(), 422);
             }
-
+           
             /* check exist name */
-            $existTitle = Product::where('title', $request->title)->where('inc', $request->inc)->first();
-            if (!$existTitle) {
-                $products = ProductService::findById($id);
-                if ($products) {
-                    
+            $checkName = Product::where('product_id', $id)->where('title', $request->title)->where('inc', $request->inc)->first();
+    
+            if(!$checkName){
+                $e = Product::where('title', $request->title)->where('inc', $request->inc)->first();
+                if ($e) {
+                    return $this->HttpErrorResponse("Product title & inc already exist", 409);
                 }
-                return $this->HttpErrorResponse("Product title already exist", 409);
             }
 
             $data = ProductService::update($id, $request);

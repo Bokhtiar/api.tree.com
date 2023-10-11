@@ -29,6 +29,7 @@ class ProductService
             'image' => $image,
             'inc' => $request->inc,
             'slug' => $request->title,
+            'price' => $request->price,
             'title' => $request->title,
             'ratting' => $request->ratting,
             'product_body' => $request->body,
