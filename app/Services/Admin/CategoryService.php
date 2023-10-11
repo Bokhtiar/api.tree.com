@@ -51,7 +51,6 @@ class CategoryService
     /* find by id by Delete */
     public static function findByIdDeleteChecker($id)
     {
-        $category = CategoryService::findById($id);
         return Category::where('parent_id', $id)->first();   
     }
 

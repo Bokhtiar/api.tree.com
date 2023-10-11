@@ -51,6 +51,11 @@ class ProductService
         return Product::find($id);
     }
 
+    public static function findByIdDeleteChecker($id)
+    {
+        return Product::where('parent_id', $id)->first();
+    }
+
     /* specific reosurces update */
     public static function update($id, $request)
     {

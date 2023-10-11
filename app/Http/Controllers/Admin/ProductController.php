@@ -100,11 +100,28 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    /*18 Remove the specified resource from storage. */
     public function destroy(string $id)
     {
-        //
+        try {
+            $product = ProductService::findById($id);
+            if (!$product) {
+                return $this->HttpErrorResponse('Product not exist', 404);
+            }
+
+            $data = ProductService::findByIdDeleteChecker($id);
+            if ($data) {
+                return $this->HttpErrorResponse('Already Exist Sub Product', 422);
+            } else {
+                $product = ProductService::findById($id);
+                if (file_exists(public_path($product->image))) {
+                    unlink(public_path($product->image));
+                }
+                $product->delete();
+            }
+            return $this->HttpSuccessResponse('Product Deleted', $data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
