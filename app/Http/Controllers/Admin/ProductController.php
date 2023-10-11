@@ -36,7 +36,6 @@ class ProductController extends Controller
                 'ratting' => 'required',
             ]);
 
-            // 'email' => 'required|email|unique:users,email,'.$user->id,
             /* check validator */
             if ($validator->fails()) {
                 return $this->HttpErrorResponse($validator->errors(), 422);
@@ -118,8 +117,23 @@ class ProductController extends Controller
                     unlink(public_path($product->image));
                 }
                 $product->delete();
+                return $this->HttpSuccessResponse('Product Deleted', $data, 200);
             }
-            return $this->HttpSuccessResponse('Product Deleted', $data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    /* specific resource status update */
+    public function status($id)
+    {
+        try {
+            $product = ProductService::findById($id);
+            if (!$product) {
+                return $this->HttpErrorResponse('Product not exist', 404);
+            }
+            ProductService::status($id);
+            return $this->HttpSuccessResponse('Product status updated successfully', $product, 200);
         } catch (\Throwable $th) {
             throw $th;
         }

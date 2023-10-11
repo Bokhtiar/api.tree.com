@@ -40,5 +40,6 @@ Route::group(['middleware' =>  'adminPermission', 'prefix' => 'admin'], function
     Route::resource('product', ProductController::class)->only([
         'index', 'store', 'show', 'update', 'destroy',
     ]);
+    Route::get('/product/status/{id}', [ProductController::class, 'status']);
 
 });
