@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use Validator;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Services\Admin\ProductService;
 
 class ProductController extends Controller
 {
     use HttpResponseTrait;
-    
+
     /* Display a listing of the resource. */
     public function index()
     {
@@ -21,7 +21,7 @@ class ProductController extends Controller
             return $this->HttpSuccessResponse("Product list", $data, 201);
         } catch (\Throwable $th) {
             throw $th;
-        }   
+        }
     }
 
     /* Store a newly created resource in storage. */
@@ -46,7 +46,6 @@ class ProductController extends Controller
             if ($existTitle) {
                 return $this->HttpErrorResponse("Product title & inc already exist", 409);
             }
-
             $data = ProductService::store($request);
             return $this->HttpSuccessResponse("Product Store Created", $data, 201);
         } catch (\Throwable $th) {
@@ -67,7 +66,7 @@ class ProductController extends Controller
 
     /* Update the specified resource in storage */
     public function update(Request $request, string $id)
-    {   
+    {
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
@@ -81,17 +80,16 @@ class ProductController extends Controller
             if ($validator->fails()) {
                 return $this->HttpErrorResponse($validator->errors(), 422);
             }
-           
+
             /* check exist name */
             $checkName = Product::where('product_id', $id)->where('title', $request->title)->where('inc', $request->inc)->first();
-    
-            if(!$checkName){
-                $e = Product::where('title', $request->title)->where('inc', $request->inc)->first();
-                if ($e) {
+
+            if (!$checkName) {
+                $existTitle = Product::where('title', $request->title)->where('inc', $request->inc)->first();
+                if ($existTitle) {
                     return $this->HttpErrorResponse("Product title & inc already exist", 409);
                 }
             }
-
             $data = ProductService::update($id, $request);
             return $this->HttpSuccessResponse("Product Store Updated", $data, 201);
         } catch (\Throwable $th) {
