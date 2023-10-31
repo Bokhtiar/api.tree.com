@@ -31,7 +31,6 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
                 'price' => 'required',
-                'inc' => 'required',
                 "category_id" => "required|exists:categories,category_id",
                 'ratting' => 'required',
             ]);
@@ -40,12 +39,7 @@ class ProductController extends Controller
             if ($validator->fails()) {
                 return $this->HttpErrorResponse($validator->errors(), 422);
             }
-
-            /* check exist name */
-            $existTitle = Product::where('title', $request->title)->where('inc', $request->inc)->first();
-            if ($existTitle) {
-                return $this->HttpErrorResponse("Product title & inc already exist", 409);
-            }
+            /* store resource */
             $data = ProductService::store($request);
             return $this->HttpSuccessResponse("Product Store Created", $data, 201);
         } catch (\Throwable $th) {

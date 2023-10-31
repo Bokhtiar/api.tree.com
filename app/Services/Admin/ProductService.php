@@ -10,12 +10,15 @@ class ProductService
     /* find all resource */
     public static function findAll()
     {
-        return Product::latest()->get(['product_id', 'title', 'inc', 'price', 'image', 'status']);
+        // return Product::latest()->get(['product_id', 'title', 'size', 'price', 'image', 'status']);
+        // $p = Product::find(4);
+        // return json_decode($p->size);
     }
 
     /* store resources documents */
     public static function storeDocument($request, $image = null)
     {
+       
         /* image store and update*/
         if ($request->hasFile('image')) {
             $path = 'images/product/';
@@ -27,7 +30,7 @@ class ProductService
 
         return array(
             'image' => $image,
-            'inc' => $request->inc,
+            'size' => json_encode($request->size),
             'slug' => $request->title,
             'price' => $request->price,
             'title' => $request->title,

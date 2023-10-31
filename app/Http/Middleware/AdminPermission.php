@@ -25,17 +25,17 @@ class AdminPermission
             }
 
             $user = JWTAuth::parseToken()->authenticate($token);
-            
             /* check role */
-            if (!$user->role == "admin") {
+            if ($user->role == "admin") {
+                return $next($request);
+            } else {
                 $errorArray = ['token' => ['Invalid Role Permission.']];
                 return $this->HttpErrorResponse($errorArray, 404);
             }
-
+            
         } catch (Exception $e) {
             $errorArray = ['token' => [$e->getMessage()]];
             return $this->HttpErrorResponse($errorArray, 404);
         }
-        return $next($request);
     }
 }
