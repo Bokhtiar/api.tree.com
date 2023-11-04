@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\ProductService;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -29,7 +30,7 @@ class ProductController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'title' => 'required',
+                'title' => 'required|unique:products',
                 'price' => 'required',
                 "category_id" => "required|exists:categories,category_id",
                 'ratting' => 'required',
@@ -62,10 +63,17 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+
+
+            /* isExist product */
+            $product = ProductService::findById($id);
+            if (!$product) {
+                return $this->HttpErrorResponse("The selected Product id is invalid", 404);
+            }
+            /* form validator */
             $validator = Validator::make($request->all(), [
-                'title' => 'required',
+                'title' => ['required', Rule::unique('products')->ignore($product)],
                 'price' => 'required',
-                'inc' => 'required',
                 "category_id" => "required|exists:categories,category_id",
                 'ratting' => 'required',
             ]);
@@ -75,15 +83,6 @@ class ProductController extends Controller
                 return $this->HttpErrorResponse($validator->errors(), 422);
             }
 
-            /* check exist name */
-            $checkName = Product::where('product_id', $id)->where('title', $request->title)->where('inc', $request->inc)->first();
-
-            if (!$checkName) {
-                $existTitle = Product::where('title', $request->title)->where('inc', $request->inc)->first();
-                if ($existTitle) {
-                    return $this->HttpErrorResponse("Product title & inc already exist", 409);
-                }
-            }
             $data = ProductService::update($id, $request);
             return $this->HttpSuccessResponse("Product Store Updated", $data, 201);
         } catch (\Throwable $th) {
