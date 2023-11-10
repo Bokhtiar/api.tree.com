@@ -10,9 +10,7 @@ class ProductService
     /* find all resource */
     public static function findAll()
     {
-        return Product::latest()->get(['product_id', 'title', 'price', 'image', 'status']);
-        // $p = Product::find(4);
-        // return json_decode($p->size);
+        return Product::latest()->get(['product_id', 'title', 'size', 'price', 'image', 'status']);
     }
 
     /* store resources documents */
@@ -29,7 +27,7 @@ class ProductService
 
         return array(
             'image' => $image,
-            'size' => json_encode($request->size),
+            'size' => $request->size,
             'slug' => $request->title,
             'price' => $request->price,
             'title' => $request->title,

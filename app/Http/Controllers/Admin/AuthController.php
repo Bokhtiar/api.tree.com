@@ -7,42 +7,34 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     use HttpResponseTrait;
 
-    public function login(Request $request)
+    /* login */
+    public function login(AuthRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:6',
-        ]);
-
-        /* check validator */
-        if ($validator->fails()) {
-            return $this->HttpErrorResponse($validator->errors(), 422);
-        }
-
         /* check exist email */
         $existCredintial = User::where('email', $request->email)->first();
         if (!$existCredintial) {
-            $errorArray = ['credentials' => ['Invalid login credentials.']];
-            return $this->HttpErrorResponse($errorArray, 404);
+            $errorArray = ['Invalid login credentials.'];
+            return $this->HttpErrorResponse(array($errorArray), 404);
         }
 
         /* check exist password */
         if (!Hash::check($request->password, $existCredintial->password)) {
-            $errorArray = ['credentials' => ['Invalid login credentials.']];
-            return $this->HttpErrorResponse($errorArray, 404);
+            $errorArray =['Invalid login credentials.'];
+            return $this->HttpErrorResponse(array($errorArray), 404);
         }
 
         /* check role */
         $checkRole = User::where('role', $existCredintial->role)->first();
         if (!$checkRole) {
-            $errorArray = ['credentials' => ['Invalid login credentials.']];
-            return $this->HttpErrorResponse($errorArray, 404);
+            $errorArray = ['Invalid login credentials.'];
+            return $this->HttpErrorResponse(array($errorArray), 404);
         }
 
         $credentials = $request->only('email', 'password');
@@ -54,7 +46,7 @@ class AuthController extends Controller
         ])->attempt($credentials);
 
         return $this->createNewToken($token);
-    } 
+    }
 
     /* create token generate exp date */
     protected function createNewToken($token)
@@ -64,10 +56,10 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
         ];
-
+ 
         return response()->json([
             'status' => 'false',
             'data' => $response_data,
-        ], 401);
+        ], 200);
     }
 }

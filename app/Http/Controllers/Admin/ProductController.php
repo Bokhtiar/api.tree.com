@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use Validator;
-use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\ProductService;
-use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -33,7 +32,6 @@ class ProductController extends Controller
                 'title' => 'required|unique:products',
                 'price' => 'required',
                 "category_id" => "required|exists:categories,category_id",
-                'ratting' => 'required',
             ]);
 
             /* check validator */
@@ -53,7 +51,7 @@ class ProductController extends Controller
     {
         try {
             $data = ProductService::findById($id);
-            return $this->HttpSuccessResponse("Product details", $data, 201);
+            return $this->HttpSuccessResponse("Product details", $data, 200);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -63,8 +61,6 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-
-
             /* isExist product */
             $product = ProductService::findById($id);
             if (!$product) {
@@ -75,7 +71,6 @@ class ProductController extends Controller
                 'title' => ['required', Rule::unique('products')->ignore($product)],
                 'price' => 'required',
                 "category_id" => "required|exists:categories,category_id",
-                'ratting' => 'required',
             ]);
 
             /* check validator */
@@ -96,20 +91,14 @@ class ProductController extends Controller
         try {
             $product = ProductService::findById($id);
             if (!$product) {
-                return $this->HttpErrorResponse('Product not exist', 404);
+                return $this->HttpErrorResponse('The selected Product id is invalid', 404);
             }
-
-            $data = ProductService::findByIdDeleteChecker($id);
-            if ($data) {
-                return $this->HttpErrorResponse('Already Exist Sub Product', 422);
-            } else {
-                $product = ProductService::findById($id);
-                if (file_exists(public_path($product->image))) {
-                    unlink(public_path($product->image));
-                }
-                $product->delete();
-                return $this->HttpSuccessResponse('Product Deleted', $data, 200);
+            $product = ProductService::findById($id);
+            if (file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
             }
+            $product->delete();
+            return $this->HttpSuccessResponse('Product Deleted', $product, 200);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -121,7 +110,7 @@ class ProductController extends Controller
         try {
             $product = ProductService::findById($id);
             if (!$product) {
-                return $this->HttpErrorResponse('Product not exist', 404);
+                return $this->HttpErrorResponse('The selected Product id is invalid', 404);
             }
             ProductService::status($id);
             return $this->HttpSuccessResponse('Product status updated successfully', $product, 200);
