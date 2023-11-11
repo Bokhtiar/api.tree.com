@@ -32,7 +32,7 @@ class CategoryService
     /* specific reosurce show */
     public static function findById($id)
     {
-        return Category::find($id);
+        return Category::with('parent')->find($id);
     }
 
     /* specific resource with field */

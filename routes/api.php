@@ -22,10 +22,12 @@ Route::group(['prefix' => 'user'], function () {
 
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::group(['middleware' =>  'adminPermission', 'prefix' => 'admin'], function () {
-
+    
+    Route::get('/category/parent', [CategoryController::class, 'categoryParentList']);
     Route::resource('category', CategoryController::class)->only([
         'index', 'store', 'show', 'update', 'destroy',
     ]);
+    
     
     Route::resource('product', ProductController::class)->only([
         'index', 'store', 'show', 'update', 'destroy',
