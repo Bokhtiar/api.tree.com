@@ -10,7 +10,7 @@ class ProductService
     /* find all resource */
     public static function findAll()
     {
-        return Product::latest()->get(['product_id', 'title', 'size', 'price', 'image', 'status']);
+        return Product::with('category')->latest()->get(['product_id', 'title', 'category_id', 'size', 'price', 'image', 'status']);
     }
 
     /* store resources documents */

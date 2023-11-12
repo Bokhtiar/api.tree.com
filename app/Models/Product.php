@@ -26,11 +26,6 @@ class Product extends Model
         'plant_body',
     ];
 
-    public function childs()
-    {
-        return $this->hasMany(Product::class, 'parent_id', 'product_id');
-    }
-
     protected function size(): Attribute
     {
         return Attribute::make(
@@ -42,5 +37,9 @@ class Product extends Model
     public function getSizeAttribute($value)
     {
         return json_decode($value);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 }
