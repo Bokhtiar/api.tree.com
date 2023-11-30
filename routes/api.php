@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
+use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::post('register', [UserAuthController::class, 'register']);
 Route::get('products', [UserProductController::class, 'index']);
 Route::get('product/{id}', [UserProductController::class, 'show']);
 
+/** category */
+Route::get('categories', [UserCategoryController::class, 'index']);
+Route::get('category/product/{id}', [UserCategoryController::class, 'categoryAssignProduct']);
+ 
 /** authorize user */
 Route::group(['prefix' => 'user'], function () {
 });
