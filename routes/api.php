@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
+use App\Http\Controllers\User\ProductController as UserProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,9 +14,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [UserAuthController::class, 'login']);
 Route::post('register', [UserAuthController::class, 'register']);
 
+/** products */
+Route::get('products', [UserProductController::class, 'index']);
+Route::get('product/{id}', [UserProductController::class, 'show']);
+
+/** authorize user */
 Route::group(['prefix' => 'user'], function () {
-    /* products */
-    
 });
 
 
