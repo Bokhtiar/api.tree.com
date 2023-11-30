@@ -7,28 +7,28 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class ProductRequest extends FormRequest
+class RegistrationRequest extends FormRequest
 {
     use HttpResponseTrait;
     
-    /* Determine if the user is authorized to make this request. */
+    /** Determine if the user is authorized to make this request */
     public function authorize(): bool
     {
         return true;
     }
 
-    /* Get the validation rules that apply to the request. */
+    /** Get the validation rules that apply to the request. */
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:products',
-            'price' => 'required',
-            'image' => 'required',
-            "category_id" => "required|exists:categories,category_id",
+            'name' => 'required',
+            'role' => 'required',
+            'password' => 'required|string|min:6',
+            'email' => 'required|string|email|unique:users,email',
         ];
     }
 
-    /* json response */
+    /** response */
     protected function failedValidation(Validator $validator)
     {
         /* validation error message */
@@ -45,4 +45,5 @@ class ProductRequest extends FormRequest
             $this->HttpErrorResponse($errors_formated, 422)
         );
     }
+
 }

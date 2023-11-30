@@ -17,14 +17,9 @@ class AuthRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    /** Get the validation rules that apply to the request. */
     public function rules(): array
     {
-
         return [
             'email' => 'required|string|email',
             'password' => 'required|string|min:6',

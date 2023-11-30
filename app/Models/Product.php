@@ -34,10 +34,10 @@ class Product extends Model
         );
     }
 
-    public function getSizeAttribute($value)
-    {
-        return json_decode($value);
-    }
+    // public function getSizeAttribute($value)
+    // {
+    //     return json_decode($value);
+    // }
 
     public function category(){
         return $this->belongsTo(Category::class, 'category_id', 'category_id');

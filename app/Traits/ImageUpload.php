@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Str;
 
 trait ImageUpload
-{
+{ 
 
     public static function Image($request, $path, $db_field_name)
     {
@@ -17,7 +17,9 @@ trait ImageUpload
             $upload_path = $path;
             $image_url = $upload_path . $image_full_name;
             $success = $image->move($upload_path, $image_full_name);
+            
         }
         return $image_url;
+        
     }
 }

@@ -36,7 +36,7 @@ class AuthController extends Controller
             $errorArray = ['Invalid login credentials.'];
             return $this->HttpErrorResponse(array($errorArray), 404);
         }
-
+ 
         $credentials = $request->only('email', 'password');
 
         $token = auth()->claims([

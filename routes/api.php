@@ -10,11 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 /* API Routes */
 
+Route::post('login', [UserAuthController::class, 'login']);
+Route::post('register', [UserAuthController::class, 'register']);
 
 Route::group(['prefix' => 'user'], function () {
-    Route::post('login', [UserAuthController::class, 'login']);
-    Route::post('register', [UserAuthController::class, 'register']);
-
     /* products */
     
 });

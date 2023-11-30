@@ -15,18 +15,16 @@ class ProductService
 
     /* store resources documents */
     public static function storeDocument($request, $image = null)
-    {     
+    {
         /* image store and update*/
-        if ($request->hasFile('image')) {
+        if ($request->image) {
             $path = 'images/product/';
             $db_field_name = 'image';
             $image =  ImageUpload::Image($request, $path, $db_field_name);
-        } else {
-            $image = $image;
         }
-
         return array(
             'image' => $image,
+            'body' => $request->body,
             'size' => $request->size,
             'slug' => $request->title,
             'price' => $request->price,
@@ -48,7 +46,7 @@ class ProductService
     /* specific reosurces show */
     public static function findById($id)
     {
-        return Product::find($id);
+        return Product::with('category')->find($id);
     }
 
     public static function findByIdDeleteChecker($id)
