@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Http\Request;
+use App\Traits\HttpResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Services\User\ProductService;
-use App\Traits\HttpResponseTrait;
+
 
 class ProductController extends Controller
 {
@@ -29,6 +31,17 @@ class ProductController extends Controller
             return $this->HttpSuccessResponse("Product show", $data, 200);
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+
+    /** price filter */
+    public function priceFilter(Request $request)
+    {
+        try {
+            $data = ProductService::findFilterPrice($request);
+            return $this->HttpSuccessResponse("Product show", $data, 200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

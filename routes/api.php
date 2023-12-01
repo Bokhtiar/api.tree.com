@@ -22,6 +22,9 @@ Route::get('product/{id}', [UserProductController::class, 'show']);
 /** category */
 Route::get('categories', [UserCategoryController::class, 'index']);
 Route::get('category/product/{id}', [UserCategoryController::class, 'categoryAssignProduct']);
+
+/** filter search */
+Route::post('product/price/filter', [UserProductController::class, 'priceFilter']);
  
 /** authorize user */
 Route::group(['prefix' => 'user'], function () {
