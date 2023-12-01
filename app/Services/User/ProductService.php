@@ -23,4 +23,16 @@ class ProductService
     {
         return Product::select(['product_id', 'title', 'category_id', 'size', 'price', 'image', 'status'])->whereBetween('price', [$request->min_price, $request->max_price])->get();
     }
+
+    /** resrouce search */
+    public static function findAllSearch($request)
+    {
+        $query = $request->search;
+        $keywords = explode(' ', $query);
+        return Product::where(function ($query) use ($keywords) {
+            foreach ($keywords as $keyword) {
+                $query->orWhere('title', 'like', '%' . $keyword . '%');
+            }
+        })->get();
+    }
 }

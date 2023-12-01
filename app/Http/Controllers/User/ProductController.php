@@ -39,7 +39,18 @@ class ProductController extends Controller
     {
         try {
             $data = ProductService::findFilterPrice($request);
-            return $this->HttpSuccessResponse("Product show", $data, 200);
+            return $this->HttpSuccessResponse("Product price filter", $data, 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    /** resoruce search */
+    public function search(Request $request)
+    {
+        try {
+            $data = ProductService::findAllSearch($request);
+            return $this->HttpSuccessResponse("Product search", $data, 200);
         } catch (\Throwable $th) {
             //throw $th;
         }

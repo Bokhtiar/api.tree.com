@@ -25,6 +25,7 @@ Route::get('category/product/{id}', [UserCategoryController::class, 'categoryAss
 
 /** filter search */
 Route::post('product/price/filter', [UserProductController::class, 'priceFilter']);
+Route::post('product/serach', [UserProductController::class, 'search']);
  
 /** authorize user */
 Route::group(['prefix' => 'user'], function () {
