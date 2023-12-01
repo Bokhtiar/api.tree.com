@@ -17,4 +17,15 @@ class CategoryController extends Controller
         $data = CategoryService::findAll();
         return $this->HttpSuccessResponse("Category list", $data, 200);
     }
+
+    /** dependice resoruce list */
+    public function categoryAssignProduct($id)
+    {
+        try {
+            $data = CategoryService::CategoryHasAssign($id);
+            return $this->HttpSuccessResponse("Category has assign product", $data, 200);
+        } catch (\Throwable $th) {
+            return $this->HttpErrorResponse($th->getMessage(), 422);
+        }
+    }
 }
